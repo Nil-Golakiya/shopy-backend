@@ -26,7 +26,7 @@ const VariationsSchema = new mongoose.Schema(
       required: true,
     },
     image:{
-      type: 'string',
+      type: Array,
     },
   }
 )

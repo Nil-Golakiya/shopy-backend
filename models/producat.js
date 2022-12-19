@@ -33,6 +33,10 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       default: 0
     },
+    images: {
+      type:Array,
+      required: true,
+    }
   },
   {
     timestamps: true,
