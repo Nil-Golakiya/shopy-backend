@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Joi=require("joi")
+const Joi = require("joi")
 
 const UserSchema = new mongoose.Schema(
     {
@@ -48,6 +48,9 @@ const UserSchema = new mongoose.Schema(
         roles: {
             type: String,
         },
+        image: {
+            type: String,
+        },
         is_active: {
             type: Boolean,
             required: false,
@@ -65,6 +68,7 @@ const userValidate = (user) => {
         email: Joi.string().email().required(),
         password: Joi.string().required(),
         phone: Joi.number().required(),
+        image:Joi.string().optional(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         address: Joi.string().required(),
@@ -77,4 +81,4 @@ const userValidate = (user) => {
 
 
 const User = mongoose.model("User", UserSchema);
-module.exports = {User,userValidate};
+module.exports = { User, userValidate };

@@ -56,7 +56,11 @@ const DeleteSubCategory = async (req, res) => {
 
 const GetAllSubCategory = async (req, res) => {
   try {
-    const allsubcategory = await SubCategory.find().populate("category_id", "name")
+    const condition = {}
+    if (req.query && req.query.category) {
+      condition.category_id = req.query.category
+    }
+    const allsubcategory = await SubCategory.find(condition).populate("category_id", "name")
     res.status(200).json(allsubcategory)
   } catch (e) {
     console.log(e)
