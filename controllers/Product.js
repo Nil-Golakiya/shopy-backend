@@ -6,7 +6,7 @@ const Variations = require("../models/variations")
 
 const GetAllProduct = async (req, res) => {
   try {
-    const allproduct = await Product.find().populate("subcategory_id", "name")
+    const allproduct = await Product.find().populate("subcategory_id","name")
     return sendSuccess(res, allproduct, "")
   } catch (error) {
     console.log("error", error)

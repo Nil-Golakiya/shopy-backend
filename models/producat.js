@@ -18,7 +18,7 @@ const ProductSchema = new mongoose.Schema(
       type: 'string',
       required: true,
     },
-    staus: {
+    status: {
       type: 'boolean',
       required: true,
       default: 0
