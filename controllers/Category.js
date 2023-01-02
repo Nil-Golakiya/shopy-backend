@@ -1,4 +1,5 @@
 const Category = require("../models/category");
+const { sendError, sendSuccess } = require("../helpers/index")
 const fs = require("fs");
 
 const CreateCategory = async (req, res,) => {
@@ -15,18 +16,6 @@ const CreateCategory = async (req, res,) => {
 
 const GetAllCategory = async function (req, res) {
   try {
-    // const allcategory = await Category.aggregate(
-    //   [
-    //     {
-    //       $lookup: {
-    //         from: "subcategories",
-    //         localField: "_id",
-    //         foreignField: "category_id",
-    //         as: "catc_details",
-    //       }
-    //     }
-    //   ]
-    // );
     const allcategory = await Category.find()
     res.status(200).json(allcategory)
   } catch (e) {
@@ -71,4 +60,24 @@ const DeleteCategory = async (req, res) => {
   }
 }
 
-module.exports = { CreateCategory, GetAllCategory, UpdateCategory, DeleteCategory }
+const GetCustomerCategory = async (req, res) => {
+  try {
+    const allcategory = await Category.aggregate(
+      [
+        {
+          $lookup: {
+            from: "subcategories",
+            localField: "_id",
+            foreignField: "category_id",
+            as: "subcategory_details",
+          }
+        }
+      ]
+    );
+    res.status(200).json(allcategory)
+  } catch (error) {
+    return sendError(res, 403, "Something went wrong", err);
+  }
+}
+
+module.exports = { CreateCategory, GetAllCategory, UpdateCategory, DeleteCategory, GetCustomerCategory }
