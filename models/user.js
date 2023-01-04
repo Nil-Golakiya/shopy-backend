@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
     {
         first_name: {
             type: String,
-            required: true,
+            required: false,
         },
         last_name: {
             type: String,
@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
         },
         user_name: {
             type: String,
-            required: false,
+            required: true,
             default: null,
         },
         email: {
@@ -62,17 +62,17 @@ const UserSchema = new mongoose.Schema(
 
 const userValidate = (user) => {
     const schema = Joi.object({
-        first_name: Joi.string().required(),
+        first_name: Joi.string(),
         last_name: Joi.string().optional(),
         user_name: Joi.string().required(),
         email: Joi.string().email().required(),
         password: Joi.string().required(),
-        phone: Joi.number().required(),
+        phone: Joi.number(),
         image:Joi.string().optional(),
-        city: Joi.string().required(),
-        state: Joi.string().required(),
-        address: Joi.string().required(),
-        pin_code: Joi.string().required(),
+        city: Joi.string(),
+        state: Joi.string(),
+        address: Joi.string(),
+        pin_code: Joi.string(),
         roles: Joi.string(),
         is_active: Joi.boolean(),
     });

@@ -41,8 +41,27 @@ const adminlogin = async (req, res) => {
         return sendSuccess(res, { user, token }, "User Login Successfully.!");
 
     } catch (err) {
-
+        console.log(err);
+        return sendError(res, 403, "Something went wrong", err);
     }
 };
 
-module.exports = { register, adminlogin }
+const clientlogin = async (req, res) => {
+    try {
+        const { email, password, roles } = req.body;
+        const user = await User.findOne({ email, roles: "user" })
+        if (!user) return sendError(res, 403, "Invalid email id");
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) return sendError(res, 403, "Invalid password");
+
+        const token = jwt.sign({ user_id: user._id }, process.env.JWT_SECRET_KEY || "jwt-secret-key");
+        return sendSuccess(res, { user, token }, "User Login Successfully.!");
+
+    } catch (err) {
+        console.log(err);
+        return sendError(res, 403, "Something went wrong", err);
+    }
+}
+
+module.exports = { register, adminlogin, clientlogin }
