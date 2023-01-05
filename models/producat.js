@@ -6,6 +6,10 @@ const ProductSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "SubCategory"
     },
+    category_id:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Category",
+    },
     title: {
       type: 'string',
       required: true,
