@@ -163,6 +163,7 @@ const getuserproductlist = async (req, res) => {
     if (req.query.subcategory_id) {
       condition.push({
         $match: {
+          "categories.name": req.query.category_id,
           "subcategories.name": req.query.subcategory_id,
         },
       });
