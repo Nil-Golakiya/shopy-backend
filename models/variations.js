@@ -4,7 +4,7 @@ const VariationsSchema = new mongoose.Schema(
   {
     product_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "ProductSchema",
+      ref: "Product",
       required: true,
     },
     color: {

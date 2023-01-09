@@ -3,6 +3,7 @@ const Categoryroute=require('./routes/Category')
 const SubCategoryroute=require('./routes/SubCategory')
 const Productroute=require('./routes/Product.js')
 const AuthRoute=require('./routes/Authentication')
+const CartRoute=require('./routes/Cart')
 const dotenv=require('dotenv')
 const mongoose=require('mongoose')
 const cors=require('cors')
@@ -40,6 +41,7 @@ app.use("/category", Categoryroute);
 app.use("/subcategory", SubCategoryroute);
 app.use("/product", Productroute);
 app.use("/auth",AuthRoute);
+app.use("/cart",CartRoute);
 
 // app.use((err, req, res, next) => {
 //   const errorStatus = err.status || 500;
