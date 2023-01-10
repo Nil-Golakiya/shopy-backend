@@ -14,7 +14,7 @@ const CreateCart = async (req, res,) => {
 
 const GetCartDetails = async (req, res,) => {
     try {
-        const cart = await Cart.find().populate("subVariation_id")
+        const cart = await Cart.find({ user_id: req.params.id }).populate("variation_id")
         res.status(200).json(cart)
     } catch (e) {
         console.log(e)
@@ -22,4 +22,18 @@ const GetCartDetails = async (req, res,) => {
     }
 }
 
-module.exports = { CreateCart, GetCartDetails }
+const DeleteCart = async (req, res) => {
+    try {
+        const deleteCart = await Cart.findById(req.params.id)
+        try {
+            await deleteCart.delete()
+            res.status(200).json("Your Product Has Been Deleted...!")
+        } catch (e) {
+            console.log(e)
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+module.exports = { CreateCart, GetCartDetails, DeleteCart }
