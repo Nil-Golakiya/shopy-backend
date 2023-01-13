@@ -14,6 +14,7 @@ const CreateCart = async (req, res,) => {
 
 const GetCartDetails = async (req, res,) => {
     try {
+        console.log(req.params.id)
         const cart = await Cart.find({ user_id: req.params.id }).populate("variation_id")
         res.status(200).json(cart)
     } catch (e) {
@@ -38,8 +39,8 @@ const DeleteCart = async (req, res) => {
 
 const UpdateCart = async (req, res) => {
     try {
-        const UpdatedCart = await Cart.findByIdAndUpdate(
-            req.params.id,
+        const UpdatedCart = await Cart.updateOne(
+            req.params._id,
             {
                 $set: req.body,
             },
