@@ -40,7 +40,7 @@ const DeleteCart = async (req, res) => {
 const UpdateCart = async (req, res) => {
     try {
         const UpdatedCart = await Cart.updateOne(
-            req.params._id,
+            {_id: req.params.id},
             {
                 $set: req.body,
             },
@@ -48,7 +48,7 @@ const UpdateCart = async (req, res) => {
         );
         res.status(200).json(UpdatedCart);
     } catch (e) {
-        console.log(e)
+        console.log('nhjunj', e)
     }
 }
 

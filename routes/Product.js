@@ -1,5 +1,13 @@
 const express = require("express");
-const { CreateProduct, UpdateProduct, DeleteProduct, GetAllProduct, GetProductById, getProductDetails, getuserproductlist } = require("../controllers/Product.js");
+const {
+    CreateProduct,
+    UpdateProduct,
+    DeleteProduct,
+    GetAllProduct,
+    GetProductById,
+    getProductDetails,
+    getuserproductlist
+} = require("../controllers/Product.js");
 const multer = require("multer");
 
 

@@ -7,7 +7,60 @@ const Variations = require("../models/variations")
 
 const GetAllProduct = async (req, res) => {
   try {
-    const allproduct = await Product.find().populate("subcategory_id", "name")
+    const condition = [
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category_id",
+          foreignField: "_id",
+          as: "categories",
+          pipeline: [{
+            $project: { name: 1 }
+          }],
+        },
+      },
+      {
+        $lookup: {
+          from: "subcategories",
+          localField: "subcategory_id",
+          foreignField: "_id",
+          as: "subcategories",
+          pipeline: [{
+            $project: { name: 1 }
+          }],
+        },
+      },
+      {
+        $lookup: {
+          from: "variations",
+          localField: "_id",
+          foreignField: "product_id",
+          as: "variations",
+          pipeline: [{
+            $project: {
+              color: 1,
+              image: 1,
+              'subVariation.size': 1,
+              'subVariation.price': 1,
+              'subVariation.discount': 1,
+            }
+          }],
+        }
+      },
+      { $unset: ["sort_description", "long_description", "status", "createdAt", "updatedAt", "__v"] }
+    ];
+
+    if (req.query.type) {
+      condition.push({
+        $match: {
+          [req.query.type]: true,
+        },
+      });
+    }
+
+    console.log("condition", condition)
+
+    const allproduct = await Product.aggregate(condition)
     return sendSuccess(res, allproduct, "")
   } catch (error) {
     console.log("error", error)
@@ -149,7 +202,7 @@ const getuserproductlist = async (req, res) => {
           }],
         }
       },
-      { $unset: [ "sort_description", "long_description","status","featured","tranding","createdAt","updatedAt","__v" ] }
+      { $unset: ["sort_description", "long_description", "status", "featured", "tranding", "createdAt", "updatedAt", "__v"] }
     ];
 
     if (!req.query.subcategory_id && req.query.category_id) {
