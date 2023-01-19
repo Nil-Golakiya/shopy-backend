@@ -1,5 +1,7 @@
 const Wishlist = require("../models/wishlist");
 const { sendError, sendSuccess } = require("../helpers/index")
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const CreateWishlist = async (req, res,) => {
     try {
@@ -13,6 +15,7 @@ const CreateWishlist = async (req, res,) => {
 }
 
 const GetWishlist = async (req, res,) => {
+
     try {
         const condition = [
             {
@@ -65,8 +68,29 @@ const GetWishlist = async (req, res,) => {
             { $unset: ["product.sort_description", "product.long_description", "product.status", "product.featured", "product.tranding", "product.createdAt", "product.updatedAt", "product.__v"] }
         ];
 
+        if (req.params.id) {
+            condition.push({
+                $match: {
+                    "user_id": ObjectId(req.params.id),
+                },
+            });
+        }
+
+        console.log("condition", condition)
+
         const allWishlist = await Wishlist.aggregate(condition);
-        res.status(200).json(allWishlist)
+
+        const newlist = allWishlist.map(wishlist => {
+            wishlist.wishlist_id = wishlist._id;
+            wishlist = { ...wishlist, ...wishlist.product[0] }
+            delete wishlist.product[0];
+            delete wishlist.product;
+            return wishlist;
+        })
+
+        console.log("newlist",newlist)
+
+        res.status(200).json(newlist)
     } catch (error) {
         console.log(error)
         return sendError(res, 403, "Something went wrong", error);
@@ -74,4 +98,19 @@ const GetWishlist = async (req, res,) => {
 }
 
 
-module.exports = { CreateWishlist, GetWishlist }
+const DeleteWishlist = async (req, res) => {
+    try {
+        const deleteWishlist = await Wishlist.findById(req.params.id)
+        try {
+            await deleteWishlist.delete()
+            res.status(200).json("Your Wishlist Product Has Been Deleted...!")
+        } catch (e) {
+            console.log(e)
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
+module.exports = { CreateWishlist, GetWishlist, DeleteWishlist }
