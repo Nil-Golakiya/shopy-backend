@@ -76,8 +76,6 @@ const GetWishlist = async (req, res,) => {
             });
         }
 
-        console.log("condition", condition)
-
         const allWishlist = await Wishlist.aggregate(condition);
 
         const newlist = allWishlist.map(wishlist => {

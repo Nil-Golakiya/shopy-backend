@@ -5,15 +5,25 @@ const Productroute = require('./routes/Product.js')
 const AuthRoute = require('./routes/Authentication')
 const CartRoute = require('./routes/Cart')
 const WishlistRoute = require('./routes/Wishlist')
+// const PaymentRoute = require('./routes/Payment')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require("path");
+// const Razorpay = require("razorpay")
 
+dotenv.config();
+
+
+// const instance = new Razorpay({
+//   key_id: process.env.RAZORPAY_API_KEY,
+//   key_secret: process.env.RAZORPAY_APT_SECRET,
+// });
+
+// module.exports = { instance }
 
 const app = express();
 
-dotenv.config();
 
 const connect = async () => {
   try {
@@ -44,6 +54,7 @@ app.use("/product", Productroute);
 app.use("/auth", AuthRoute);
 app.use("/cart", CartRoute);
 app.use("/wishlist", WishlistRoute);
+// app.use("/payment", PaymentRoute);
 
 // app.use((err, req, res, next) => {
 //   const errorStatus = err.status || 500;
@@ -60,3 +71,4 @@ app.listen(8800, () => {
   connect();
   console.log("Connected To Backend");
 });
+

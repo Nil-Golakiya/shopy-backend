@@ -92,7 +92,16 @@ const GetProductById = async (req, res) => {
 
 const CreateProduct = async (req, res) => {
   try {
+    const files = [];
+    console.log("req.files",req.files)
+    console.log("req.file",req.file)
+    req.files.map((file) => {
+      files.push(file.path);
+      return file;
+    })
     const data = req.body;
+    console.log('#####', data);
+    data.images = files;
     const variations = data.variations;
     delete data.variations;
 

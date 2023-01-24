@@ -27,7 +27,7 @@ const OrderSchema = new mongoose.Schema(
         },
         payment_id: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "payments",
+            ref: "Payment",
         },
         total_price: {
             type: Number,
