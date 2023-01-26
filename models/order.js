@@ -19,15 +19,16 @@ const OrderSchema = new mongoose.Schema(
         ],
         status: {
             type: String,
-            required: true,
+            required: false,
+            default: "Initiated"
         },
         date: {
             type: Date,
             required: false,
         },
-        payment_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Payment",
+        Transaction_Id: {
+            type: String,
+            default: ""
         },
         total_price: {
             type: Number,
@@ -36,10 +37,6 @@ const OrderSchema = new mongoose.Schema(
         discount: {
             code: { type: String, default: null },
             amount: { type: Number, default: 0 },
-        },
-        shipOrder_info: {
-            type: Object,
-            default: {},
         },
         contact_info: {
             email: { type: String },

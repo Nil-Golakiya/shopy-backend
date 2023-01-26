@@ -5,11 +5,13 @@ const Productroute = require('./routes/Product.js')
 const AuthRoute = require('./routes/Authentication')
 const CartRoute = require('./routes/Cart')
 const WishlistRoute = require('./routes/Wishlist')
-// const PaymentRoute = require('./routes/Payment')
+const PaymentRoute = require('./routes/Payment')
+const CouponRoute = require('./routes/Coupon')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require("path");
+var bodyParser = require('body-parser')
 // const Razorpay = require("razorpay")
 
 dotenv.config();
@@ -44,7 +46,9 @@ mongoose.connection.on("connected", () => {
 });
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+// app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 // app.use(cookieParser());
 
@@ -54,7 +58,8 @@ app.use("/product", Productroute);
 app.use("/auth", AuthRoute);
 app.use("/cart", CartRoute);
 app.use("/wishlist", WishlistRoute);
-// app.use("/payment", PaymentRoute);
+app.use("/api", PaymentRoute);
+app.use("/coupon", CouponRoute);
 
 // app.use((err, req, res, next) => {
 //   const errorStatus = err.status || 500;

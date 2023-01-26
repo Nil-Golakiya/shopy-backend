@@ -1,10 +1,11 @@
-// const express = require("express");
-// const { Checkout } = require("../controllers/Payment");
+const express = require("express");
+const { preTransactionHandler, postTransactionHandler } = require("../controllers/pretransaction");
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post("/", Checkout);
+router.post("/pretransaction", preTransactionHandler);
+router.post("/posttransaction", postTransactionHandler);
 
 
 
-// module.exports = router;
+module.exports = router;

@@ -37,10 +37,24 @@ const DeleteCart = async (req, res) => {
     }
 }
 
+const ClearCart = async (req, res) => {
+    try {
+        const ClearCartItems = await Cart.deleteMany({ user_id: req.params.id })
+        try {
+            res.status(200).json("Your Cart Has Been Cleared...!")
+        } catch (e) {
+            console.log(e)
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+
 const UpdateCart = async (req, res) => {
     try {
         const UpdatedCart = await Cart.updateOne(
-            {_id: req.params.id},
+            { _id: req.params.id },
             {
                 $set: req.body,
             },
@@ -52,4 +66,4 @@ const UpdateCart = async (req, res) => {
     }
 }
 
-module.exports = { CreateCart, GetCartDetails, DeleteCart, UpdateCart }
+module.exports = { CreateCart, GetCartDetails, DeleteCart, UpdateCart, ClearCart }
