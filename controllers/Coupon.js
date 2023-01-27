@@ -23,7 +23,7 @@ const GetCouponDetails = async (req, res) => {
 
 const GetOneCouponDetails = async (req, res) => {
     try {
-        const coupon = await Coupon.findOne({ code: req.params.code })
+        const coupon = await Coupon.findOne({ code: req.params.code})
         res.status(200).json(coupon)
     } catch (e) {
         console.log(e)
