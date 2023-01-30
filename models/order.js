@@ -26,7 +26,7 @@ const OrderSchema = new mongoose.Schema(
             type: Date,
             required: false,
         },
-        Transaction_Id: {
+        paymentInfo: {
             type: String,
             default: ""
         },

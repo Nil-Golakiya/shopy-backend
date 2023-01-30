@@ -7,6 +7,7 @@ const CartRoute = require('./routes/Cart')
 const WishlistRoute = require('./routes/Wishlist')
 const PaymentRoute = require('./routes/Payment')
 const CouponRoute = require('./routes/Coupon')
+const OrderRoute = require('./routes/Order')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -60,6 +61,7 @@ app.use("/cart", CartRoute);
 app.use("/wishlist", WishlistRoute);
 app.use("/api", PaymentRoute);
 app.use("/coupon", CouponRoute);
+app.use("/order", OrderRoute);
 
 // app.use((err, req, res, next) => {
 //   const errorStatus = err.status || 500;
