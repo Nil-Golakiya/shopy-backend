@@ -3,7 +3,17 @@ const { sendError, sendSuccess } = require("../helpers/index")
 
 const GetOrderByUserId = async (req, res,) => {
     try {
-        const order = await Order.find({ user_id: req.params.id })
+        const order = await Order.find({ user_id: req.params.id }).populate("order_details_id")
+        res.status(200).json(order)
+    } catch (e) {
+        console.log(e)
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
+const GetOrderByOrderId = async (req, res,) => {
+    try {
+        const order = await Order.findOne({ _id: req.params.id }).populate("order_details_id")
         res.status(200).json(order)
     } catch (e) {
         console.log(e)
@@ -54,4 +64,4 @@ const UpdateCart = async (req, res) => {
     }
 }
 
-module.exports = { GetOrderByUserId }
+module.exports = { GetOrderByUserId, GetOrderByOrderId }

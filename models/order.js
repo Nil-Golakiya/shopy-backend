@@ -38,6 +38,10 @@ const OrderSchema = new mongoose.Schema(
             code: { type: String, default: null },
             amount: { type: Number, default: 0 },
         },
+        shippingCharge: {
+            type: Number,
+            required: true,
+        },
         contact_info: {
             email: { type: String },
             phone_no: { type: Number },

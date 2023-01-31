@@ -25,6 +25,7 @@ const preTransactionHandler = async (req, res) => {
             contact_info: req.body.contact_info,
             shipping_info: req.body.data,
             discount: req.body.discount,
+            shippingCharge: req.body.shippingCharge
         })
 
         await order.save().then(async (order) => {
@@ -58,7 +59,7 @@ const preTransactionHandler = async (req, res) => {
             "orderId": req.body.oid,
             "callbackUrl": `${process.env.HOST}/api/posttransaction`,
             "txnAmount": {
-                "value": 1, // req.body.finalPrice,
+                "value": req.body.finalPrice,
                 "currency": "INR",
             },
             "userInfo": {
@@ -155,7 +156,7 @@ const postTransactionHandler = async (req, res) => {
 
             order_details_id.map(async (item) => {
                 const data = await OrderDetails.findById(item)
-                await Variation.updateOne({ "subVariation._id": data.product_info._id },{ $inc: { "subVariation.$.qty": -data.quantity } })
+                await Variation.updateOne({ "subVariation._id": data.product_info._id }, { $inc: { "subVariation.$.qty": -data.quantity } })
                 console.log("data", data)
             })
         } else if (req.body.STATUS == 'PENDING') {
