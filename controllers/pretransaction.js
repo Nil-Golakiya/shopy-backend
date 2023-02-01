@@ -9,7 +9,7 @@ const Paytmchecksum = require("paytmchecksum")
 
 const preTransactionHandler = async (req, res) => {
 
-    // console.log("req---------", req)
+    console.log("req---------", req)
 
     let { cart } = req.body;
 
@@ -121,7 +121,7 @@ const preTransactionHandler = async (req, res) => {
 
 const postTransactionHandler = async (req, res) => {
 
-    // console.log("postTransactionHandler", req)
+    console.log("postTransactionHandler", req)
     try {
         let order;
         //validate paytm checksum
@@ -147,7 +147,7 @@ const postTransactionHandler = async (req, res) => {
         //Update status into Orders table after transaction status
 
         if (req.body.STATUS == 'TXN_SUCCESS') {
-            order = await Order.findOneAndUpdate({ orderId: req.body.ORDERID }, {
+            order = await Order.findOneAndUpdate({ order_id: req.body.ORDERID }, {
                 status: "Paid",
                 paymentInfo: JSON.stringify(req.body), transactionId: req.body.TXNID
             })

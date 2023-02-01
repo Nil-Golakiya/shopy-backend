@@ -21,6 +21,16 @@ const GetOrderByOrderId = async (req, res,) => {
     }
 }
 
+const GetAllOrder = async (req, res,) => {
+    try {
+        const order = await Order.find()
+        res.status(200).json(order)
+    } catch (e) {
+        console.log(e)
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
 const DeleteCart = async (req, res) => {
     try {
         const deleteCart = await Cart.findById(req.params.id)
@@ -64,4 +74,4 @@ const UpdateCart = async (req, res) => {
     }
 }
 
-module.exports = { GetOrderByUserId, GetOrderByOrderId }
+module.exports = { GetOrderByUserId, GetOrderByOrderId, GetAllOrder }
