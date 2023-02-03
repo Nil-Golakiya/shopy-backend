@@ -23,7 +23,7 @@ const GetCouponDetails = async (req, res) => {
 
 const GetOneCouponDetails = async (req, res) => {
     try {
-        const coupon = await Coupon.findOne({ code: req.params.code})
+        const coupon = await Coupon.findOne({ code: req.params.code })
         res.status(200).json(coupon)
     } catch (e) {
         console.log(e)
@@ -31,47 +31,34 @@ const GetOneCouponDetails = async (req, res) => {
     }
 }
 
-// const DeleteCart = async (req, res) => {
-//     try {
-//         const deleteCart = await Cart.findById(req.params.id)
-//         try {
-//             await deleteCart.delete()
-//             res.status(200).json("Your Product Has Been Deleted...!")
-//         } catch (e) {
-//             console.log(e)
-//         }
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
+const DeleteCoupon = async (req, res) => {
+    try {
+        const deleteCoupon = await Coupon.findById(req.params.id)
+        try {
+            await deleteCoupon.delete()
+            res.status(200).json("Your Coupon Has Been Deleted...!")
+        } catch (e) {
+            return sendError(res, 403, "Something went wrong", e);
+        }
+    } catch (e) {
+        return sendError(res, 403, "Something went wrong", e);
 
-// const ClearCart = async (req, res) => {
-//     try {
-//         const ClearCartItems = await Cart.deleteMany({ user_id: req.params.id })
-//         try {
-//             res.status(200).json("Your Cart Has Been Cleared...!")
-//         } catch (e) {
-//             console.log(e)
-//         }
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
+    }
+}
 
+const UpdateCoupon = async (req, res) => {
+    try {
+        const UpdatedCoupon = await Coupon.updateOne(
+            { _id: req.params.id },
+            {
+                $set: req.body,
+            },
+            { new: true }
+        );
+        res.status(200).json(UpdatedCoupon);
+    } catch (e) {
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
 
-// const UpdateCart = async (req, res) => {
-//     try {
-//         const UpdatedCart = await Cart.updateOne(
-//             { _id: req.params.id },
-//             {
-//                 $set: req.body,
-//             },
-//             { new: true }
-//         );
-//         res.status(200).json(UpdatedCart);
-//     } catch (e) {
-//         console.log('nhjunj', e)
-//     }
-// }
-
-module.exports = { CreateCoupon, GetCouponDetails, GetOneCouponDetails }
+module.exports = { CreateCoupon, GetCouponDetails, GetOneCouponDetails, DeleteCoupon, UpdateCoupon }

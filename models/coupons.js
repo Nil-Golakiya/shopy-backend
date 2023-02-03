@@ -19,6 +19,14 @@ const CouponSchema = new mongoose.Schema(
             type: Number,
             default: null,
         },
+        terms_and_conditions: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
         min_amount: {
             type: Number,
             required: true,
