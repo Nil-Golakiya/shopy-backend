@@ -47,8 +47,8 @@ mongoose.connection.on("connected", () => {
 });
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }))
+app.use(bodyParser.json({ limit: '50mb' }))
 // app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 // app.use(cookieParser());
