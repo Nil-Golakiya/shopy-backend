@@ -43,7 +43,9 @@ const UpdateSubcategory = async (req, res) => {
 const DeleteSubCategory = async (req, res) => {
   try {
     const deletesubcategory = await SubCategory.findById(req.params.id)
+    // const category_id=deletesubcategory.category_id
     try {
+      await Category.updateOne({ _id: deletesubcategory.category_id }, { $pop: { subcategory_id: deletesubcategory._id } });
       await deletesubcategory.delete();
       res.status(200).json("Your SubCategory Has Been Deleted...!")
     } catch (e) {
