@@ -27,6 +27,53 @@ const register = async (req, res) => {
     }
 }
 
+const UpdateUserDetails = async (req, res) => {
+    try {
+        const getEmail = await User.findOne({ _id: { $ne: req.params.id }, email: req.body.email });
+        if (getEmail) return sendError(res, 403, "Email is already exists.");
+
+        const UpdatedUser = await User.updateOne(
+            { _id: req.params.id },
+            {
+                $set: req.body,
+            },
+            { new: true }
+        );
+        return sendSuccess(res, UpdatedUser, "User Updated Successfully.!");
+    } catch (e) {
+        console.log("e", e)
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
+const UpdatePassword = async (req, res) => {
+    try {
+        const getUser = await User.findOne({ email: req.body.email });
+        const condition = await bcrypt.compare(req.body.old_password, getUser.password)
+
+        if (condition) {
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(req.body.new_password, salt);
+            let password = hash;
+            let UpdatedUser = await User.findOneAndUpdate({ email: req.body.email }, { password })
+            return sendSuccess(res, UpdatedUser, "Password Updated Successfully.!");
+        } else {
+            return sendError(res, 403, "Old password is not matched");
+        }
+    } catch (error) {
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
+const GetUserDetails = async (req, res,) => {
+    try {
+        const user = await User.findOne({ _id: req.params.id })
+        return sendSuccess(res, user, "User details get Successfully.!");
+    } catch (e) {
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
 const adminlogin = async (req, res) => {
     try {
         const { email, password, roles } = req.body;
@@ -61,4 +108,4 @@ const clientlogin = async (req, res) => {
     }
 }
 
-module.exports = { register, adminlogin, clientlogin }
+module.exports = { register, adminlogin, clientlogin, UpdateUserDetails, GetUserDetails, UpdatePassword }
