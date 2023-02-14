@@ -23,7 +23,6 @@ const register = async (req, res) => {
         await newUser.save();
         return sendSuccess(res, newUser, "User Register Successfully.!");
     } catch (err) {
-        console.log(err);
         return sendError(res, 403, "Something went wrong", err);
     }
 }
@@ -41,7 +40,6 @@ const adminlogin = async (req, res) => {
         return sendSuccess(res, { user, token }, "User Login Successfully.!");
 
     } catch (err) {
-        console.log(err);
         return sendError(res, 403, "Something went wrong", err);
     }
 };
@@ -59,7 +57,6 @@ const clientlogin = async (req, res) => {
         return sendSuccess(res, { user, token }, "User Login Successfully.!");
 
     } catch (err) {
-        console.log(err);
         return sendError(res, 403, "Something went wrong", err);
     }
 }

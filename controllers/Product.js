@@ -222,8 +222,6 @@ const getUserProductList = async (req, res) => {
     }
 
     const allProducts = await Product.aggregate(condition);
-
-    res.status(200).json(allProducts)
     return sendSuccess(res, allProducts, "Get clientSide ProductList successfully")
   } catch (error) {
     console.log(error)

@@ -9,7 +9,6 @@ const CreateWishlist = async (req, res,) => {
         const saveWishlist = await newWishlist.save();
         return sendSuccess(res, saveWishlist, "Wishlist created successfully")
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }

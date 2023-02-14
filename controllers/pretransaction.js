@@ -9,8 +9,6 @@ const Paytmchecksum = require("paytmchecksum")
 
 const preTransactionHandler = async (req, res) => {
 
-    console.log("req---------", req)
-
     let { cart } = req.body;
 
     if (req.method === "POST") {
@@ -50,8 +48,6 @@ const preTransactionHandler = async (req, res) => {
         var paytmParams = {};
         const contact_info = req.body.contact_info
 
-        // console.log(req.body)
-
         paytmParams.body = {
             "requestType": "Payment",
             "mid": process.env.PAYTM_MID,
@@ -68,14 +64,13 @@ const preTransactionHandler = async (req, res) => {
         };
 
         const checksum = await PaytmChecksum.generateSignature(JSON.stringify(paytmParams.body), process.env.PAYTM_KEY)
-        // console.log("checksum", checksum)
 
         paytmParams.head = {
             "signature": checksum
         };
 
         var post_data = JSON.stringify(paytmParams);
-        // console.log('post_data', post_data)
+
         const requestAsync = async () => {
             return new Promise((resolve, reject) => {
                 var options = {
@@ -102,7 +97,6 @@ const preTransactionHandler = async (req, res) => {
                     });
 
                     post_res.on('end', function () {
-                        // console.log('Response: ', response);
                         resolve(JSON.parse(response).body);
                     });
                 });
@@ -113,15 +107,12 @@ const preTransactionHandler = async (req, res) => {
         }
 
         let myr = await requestAsync()
-        // console.log("myr", myr)
         res.status(200).json({ success: true, myr })
 
     }
 }
 
 const postTransactionHandler = async (req, res) => {
-
-    console.log("postTransactionHandler", req)
     try {
         let order;
         //validate paytm checksum
@@ -157,7 +148,6 @@ const postTransactionHandler = async (req, res) => {
             order_details_id.map(async (item) => {
                 const data = await OrderDetails.findById(item)
                 await Variation.updateOne({ "subVariation._id": data.product_info._id }, { $inc: { "subVariation.$.qty": -data.quantity } })
-                console.log("data", data)
             })
         } else if (req.body.STATUS == 'PENDING') {
             order = await Order.findOneAndUpdate({ orderId: req.body.ORDERID }, {
@@ -167,8 +157,6 @@ const postTransactionHandler = async (req, res) => {
         }
 
         //initiate Shipping
-
-        console.log("order", order)
 
         //redirect user to the order conformation page
         res.redirect("http://localhost:3000/account-order", 200)

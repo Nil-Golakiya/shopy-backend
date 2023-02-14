@@ -16,7 +16,6 @@ const GetCouponDetails = async (req, res) => {
         const coupon = await Coupon.find()
         res.status(200).json(coupon)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }
@@ -26,7 +25,6 @@ const GetOneCouponDetails = async (req, res) => {
         const coupon = await Coupon.findOne({ code: req.params.code })
         res.status(200).json(coupon)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }

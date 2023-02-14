@@ -6,7 +6,6 @@ const GetOrderByUserId = async (req, res,) => {
         const order = await Order.find({ user_id: req.params.id }).populate("order_details_id")
         res.status(200).json(order)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }
@@ -16,7 +15,6 @@ const GetOrderByOrderId = async (req, res,) => {
         const order = await Order.findOne({ _id: req.params.id }).populate("order_details_id")
         res.status(200).json(order)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }
@@ -26,7 +24,6 @@ const GetAllOrder = async (req, res,) => {
         const order = await Order.find()
         res.status(200).json(order)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }

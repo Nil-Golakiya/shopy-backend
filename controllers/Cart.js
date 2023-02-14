@@ -14,11 +14,9 @@ const CreateCart = async (req, res,) => {
 
 const GetCartDetails = async (req, res,) => {
     try {
-        console.log(req.params.id)
         const cart = await Cart.find({ user_id: req.params.id }).populate("variation_id")
         res.status(200).json(cart)
     } catch (e) {
-        console.log(e)
         return sendError(res, 403, "Something went wrong", e);
     }
 }
