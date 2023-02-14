@@ -30,10 +30,10 @@ const DeleteCart = async (req, res) => {
             await deleteCart.delete()
             res.status(200).json("Your Product Has Been Deleted...!")
         } catch (e) {
-            console.log(e)
+            return sendError(res, 403, "Something went wrong", e);
         }
     } catch (e) {
-        console.log(e)
+        return sendError(res, 403, "Something went wrong", e);
     }
 }
 
@@ -43,10 +43,10 @@ const ClearCart = async (req, res) => {
         try {
             res.status(200).json("Your Cart Has Been Cleared...!")
         } catch (e) {
-            console.log(e)
+            return sendError(res, 403, "Something went wrong", e);
         }
     } catch (e) {
-        console.log(e)
+        return sendError(res, 403, "Something went wrong", e);
     }
 }
 
@@ -62,7 +62,7 @@ const UpdateCart = async (req, res) => {
         );
         res.status(200).json(UpdatedCart);
     } catch (e) {
-        console.log('nhjunj', e)
+        return sendError(res, 403, "Something went wrong", e);
     }
 }
 

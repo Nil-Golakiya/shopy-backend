@@ -9,13 +9,11 @@ const CreateSubCategory = async (req, res) => {
     req.body.image = img;
     const subCategory = await SubCategory.create(req.body);
     await Category.updateOne({ _id: req.body.category_id }, { $push: { subcategory_id: subCategory._id } });
-    res.status(200).json("subcategory created successfully")
+    return sendSuccess(res, subCategory, "SubCategory created successfully")
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
-
-
 
 const UpdateSubcategory = async (req, res) => {
   try {
@@ -34,25 +32,24 @@ const UpdateSubcategory = async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).json(UpdateSubcategory);
+    return sendSuccess(res, UpdateSubcategory, "SubCategory updated successfully")
   } catch (e) {
-    console.log(e);
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 
 const DeleteSubCategory = async (req, res) => {
   try {
-    const deletesubcategory = await SubCategory.findById(req.params.id)
-    // const category_id=deletesubcategory.category_id
+    const DeleteSubcategory = await SubCategory.findById(req.params.id)
     try {
-      await Category.updateOne({ _id: deletesubcategory.category_id }, { $pop: { subcategory_id: deletesubcategory._id } });
-      await deletesubcategory.delete();
-      res.status(200).json("Your SubCategory Has Been Deleted...!")
+      await Category.updateOne({ _id: DeleteSubcategory.category_id }, { $pop: { subcategory_id: DeleteSubcategory._id } });
+      await DeleteSubcategory.delete();
+      return sendSuccess(res, DeleteSubcategory, "SubCategory deleted successfully")
     } catch (e) {
-      console.log(e)
+      return sendError(res, 403, "Something went wrong", e);
     }
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 
@@ -62,10 +59,10 @@ const GetAllSubCategory = async (req, res) => {
     if (req.query && req.query.category) {
       condition.category_id = req.query.category
     }
-    const allsubcategory = await SubCategory.find(condition).populate("category_id", "name")
-    res.status(200).json(allsubcategory)
+    const allSubcategory = await SubCategory.find(condition).populate("category_id", "name")
+    return sendSuccess(res, allSubcategory, "SubCategory's get successfully")
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 

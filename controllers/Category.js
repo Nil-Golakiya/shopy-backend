@@ -10,7 +10,7 @@ const CreateCategory = async (req, res,) => {
     const savecategory = await newcategory.save();
     res.status(200).json(savecategory)
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 
@@ -19,7 +19,7 @@ const GetAllCategory = async function (req, res) {
     const allcategory = await Category.find()
     res.status(200).json(allcategory)
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 
@@ -42,7 +42,7 @@ const UpdateCategory = async (req, res) => {
     );
     res.status(200).json(UpdatedCategory);
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 
@@ -53,10 +53,10 @@ const DeleteCategory = async (req, res) => {
       await deleteCategory.delete()
       res.status(200).json("Your Category Has Been Deleted...!")
     } catch (e) {
-      console.log(e)
+      return sendError(res, 403, "Something went wrong", e);
     }
   } catch (e) {
-    console.log(e)
+    return sendError(res, 403, "Something went wrong", e);
   }
 }
 

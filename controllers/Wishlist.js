@@ -7,7 +7,7 @@ const CreateWishlist = async (req, res,) => {
     try {
         const newWishlist = new Wishlist(req.body);
         const saveWishlist = await newWishlist.save();
-        res.status(200).json(saveWishlist)
+        return sendSuccess(res, saveWishlist, "Wishlist created successfully")
     } catch (e) {
         console.log(e)
         return sendError(res, 403, "Something went wrong", e);
@@ -85,12 +85,8 @@ const GetWishlist = async (req, res,) => {
             delete wishlist.product;
             return wishlist;
         })
-
-        console.log("newlist",newlist)
-
-        res.status(200).json(newlist)
+        return sendSuccess(res, newlist, "Wishlist get successfully")
     } catch (error) {
-        console.log(error)
         return sendError(res, 403, "Something went wrong", error);
     }
 }
@@ -101,12 +97,12 @@ const DeleteWishlist = async (req, res) => {
         const deleteWishlist = await Wishlist.findById(req.params.id)
         try {
             await deleteWishlist.delete()
-            res.status(200).json("Your Wishlist Product Has Been Deleted...!")
+            return sendSuccess(res, deleteWishlist, "Wishlist product deleted successfully")
         } catch (e) {
-            console.log(e)
+            return sendError(res, 403, "Something went wrong", error);
         }
     } catch (e) {
-        console.log(e)
+        return sendError(res, 403, "Something went wrong", error);
     }
 }
 

@@ -49,7 +49,7 @@ const DeleteCoupon = async (req, res) => {
 const UpdateCoupon = async (req, res) => {
     try {
         const UpdatedCoupon = await Coupon.updateOne(
-            { _id: req.params.id },
+            { code: req.params.code },
             {
                 $set: req.body,
             },

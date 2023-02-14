@@ -57,14 +57,10 @@ const GetAllProduct = async (req, res) => {
         },
       });
     }
-
-    console.log("condition", condition)
-
     const allproduct = await Product.aggregate(condition)
-    return sendSuccess(res, allproduct, "")
+    return sendSuccess(res, allproduct, "Product's get successfully")
   } catch (error) {
-    console.log("error", error)
-    return sendError(res, error, "")
+    return sendError(res, error, "Something went wrong")
   }
 }
 
@@ -83,10 +79,9 @@ const GetProductById = async (req, res) => {
         }
       ]
     );
-    return sendSuccess(res, product, "")
+    return sendSuccess(res, product, "Product get successfully")
   } catch (error) {
-    console.log("error", error)
-    return sendError(res, error, "")
+    return sendError(res, error, "Something went wrong")
   }
 }
 
@@ -105,44 +100,47 @@ const CreateProduct = async (req, res) => {
       await variationObj.save();
     })
 
-    res.status(200).json(p)
+    return sendSuccess(res, p, "Product create successfully")
   } catch (e) {
-    console.log(e)
+    return sendError(res, e, "Something went wrong")
   }
 }
 
 const UpdateProduct = async (req, res) => {
-  const data = req.body;
-  const variations = data.variations;
-  delete data.variations;
+  try {
+    const data = req.body;
+    const variations = data.variations;
+    delete data.variations;
 
-  const product = await Product.findOneAndUpdate({ _id: req.params.id }, data);
+    const product = await Product.findOneAndUpdate({ _id: req.params.id }, data);
 
-  await Variations.deleteMany({ product_id: req.params.id });
+    await Variations.deleteMany({ product_id: req.params.id });
 
-  variations.map(async (variation) => {
-    variation.product_id = req.params.id;
-    const variationObj = new Variations(variation);
-    await variationObj.save();
-  })
-
-  res.status(200).json(product)
+    variations.map(async (variation) => {
+      variation.product_id = req.params.id;
+      const variationObj = new Variations(variation);
+      await variationObj.save();
+    })
+    return sendSuccess(res, product, "Product updated successfully")
+  } catch (error) {
+    return sendError(res, error, "Something went wrong")
+  }
 }
 
 const DeleteProduct = async (req, res) => {
   try {
     await Variations.deleteMany({ product_id: req.params.id });
-    const deletedproduct = await Product.findById(req.params.id);
-    await deletedproduct.delete()
-    res.status(200).json("Your Prodct Has Been Deleted...!")
+    const deleteProduct = await Product.findById(req.params.id);
+    await deleteProduct.delete()
+    return sendSuccess(res, deleteProduct, "Product delete successfully")
   } catch (error) {
-    console.log(error)
+    return sendError(res, error, "Something went wrong")
   }
 }
 
 const getProductDetails = async (req, res) => {
   try {
-    const allproductdetails = await Product.aggregate(
+    const allProductDetails = await Product.aggregate(
       [
         {
           $lookup: {
@@ -154,13 +152,14 @@ const getProductDetails = async (req, res) => {
         }
       ]
     );
-    res.status(200).json(allproductdetails)
+    return sendSuccess(res, allProductDetails, "Product get successfully")
+
   } catch (error) {
     return sendError(res, 403, "Something went wrong", error);
   }
 }
 
-const getuserproductlist = async (req, res) => {
+const getUserProductList = async (req, res) => {
   try {
     const condition = [
       {
@@ -225,6 +224,7 @@ const getuserproductlist = async (req, res) => {
     const allProducts = await Product.aggregate(condition);
 
     res.status(200).json(allProducts)
+    return sendSuccess(res, allProducts, "Get clientSide ProductList successfully")
   } catch (error) {
     console.log(error)
     return sendError(res, 403, "Something went wrong", error);
@@ -232,4 +232,4 @@ const getuserproductlist = async (req, res) => {
 }
 
 
-module.exports = { CreateProduct, UpdateProduct, DeleteProduct, GetAllProduct, GetProductById, getProductDetails, getuserproductlist }
+module.exports = { CreateProduct, UpdateProduct, DeleteProduct, GetAllProduct, GetProductById, getProductDetails, getUserProductList }
