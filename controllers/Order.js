@@ -21,7 +21,7 @@ const GetOrderByOrderId = async (req, res,) => {
 
 const GetAllOrder = async (req, res,) => {
     try {
-        const order = await Order.find()
+        const order = await Order.find().populate("order_details_id")
         res.status(200).json(order)
     } catch (e) {
         return sendError(res, 403, "Something went wrong", e);
