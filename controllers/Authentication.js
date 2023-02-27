@@ -108,4 +108,27 @@ const clientlogin = async (req, res) => {
     }
 }
 
-module.exports = { register, adminlogin, clientlogin, UpdateUserDetails, GetUserDetails, UpdatePassword }
+const allUser = async (req, res) => {
+    try {
+        const AllUser = await User.find({ roles: "user" })
+        res.status(200).json(AllUser)
+    } catch (error) {
+        return sendError(res, 403, "Something went wrong", err);
+    }
+}
+
+const DeleteUser = async (req, res) => {
+    try {
+        const deleteUser = await User.findById(req.params.id)
+        try {
+            await deleteUser.delete()
+            res.status(200).json("Your User Has Been Deleted...!")
+        } catch (e) {
+            return sendError(res, 403, "Something went wrong", e);
+        }
+    } catch (e) {
+        return sendError(res, 403, "Something went wrong", e);
+    }
+}
+
+module.exports = { register, adminlogin, clientlogin, UpdateUserDetails, GetUserDetails, UpdatePassword, allUser, DeleteUser }
