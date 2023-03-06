@@ -229,5 +229,74 @@ const getUserProductList = async (req, res) => {
   }
 }
 
+const getLimitedProductList = async (req, res) => {
+  try {
+    const condition = [
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category_id",
+          foreignField: "_id",
+          as: "categories",
+          pipeline: [{
+            $project: { name: 1 }
+          }],
+        },
+      },
+      {
+        $lookup: {
+          from: "subcategories",
+          localField: "subcategory_id",
+          foreignField: "_id",
+          as: "subcategories",
+          pipeline: [{
+            $project: { name: 1 }
+          }],
+        },
+      },
+      {
+        $lookup: {
+          from: "variations",
+          localField: "_id",
+          foreignField: "product_id",
+          as: "variations",
+          pipeline: [{
+            $project: {
+              color: 1,
+              image: 1,
+              'subVariation.size': 1,
+              'subVariation.price': 1,
+              'subVariation.discount': 1,
+            }
+          }],
+        }
+      },
+      { $unset: ["sort_description", "long_description", "status", "featured", "tranding", "createdAt", "updatedAt", "__v"] }
+    ];
 
-module.exports = { CreateProduct, UpdateProduct, DeleteProduct, GetAllProduct, GetProductById, getProductDetails, getUserProductList }
+    if (!req.query.subcategory_id && req.query.category_id) {
+      condition.push({
+        $match: {
+          "categories.name": req.query.category_id,
+        },
+      });
+    }
+
+    if (req.query.subcategory_id) {
+      condition.push({
+        $match: {
+          "categories.name": req.query.category_id,
+          "subcategories.name": req.query.subcategory_id,
+        },
+      });
+    }
+
+    const allProducts = await Product.aggregate(condition).limit(4);
+    return sendSuccess(res, allProducts, "Get clientSide ProductList successfully")
+  } catch (error) {
+    console.log(error)
+    return sendError(res, 403, "Something went wrong", error);
+  }
+}
+
+module.exports = { CreateProduct, UpdateProduct, DeleteProduct, GetAllProduct, GetProductById, getProductDetails, getUserProductList, getLimitedProductList }
