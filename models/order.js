@@ -26,10 +26,6 @@ const OrderSchema = new mongoose.Schema(
             type: Date,
             required: false,
         },
-        paymentInfo: {
-            type: String,
-            default: ""
-        },
         total_price: {
             type: Number,
             required: true,

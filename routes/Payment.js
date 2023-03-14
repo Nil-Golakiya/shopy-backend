@@ -1,11 +1,10 @@
 const express = require("express");
-const { preTransactionHandler, postTransactionHandler} = require("../controllers/pretransaction");
+const { checkout, paymentVerification } = require("../controllers/payment");
+
 
 const router = express.Router();
 
-router.post("/pretransaction", preTransactionHandler);
-router.post("/posttransaction", postTransactionHandler);
-
-
+router.post("/checkout", checkout);
+router.post("/paymentverification", paymentVerification);
 
 module.exports = router;

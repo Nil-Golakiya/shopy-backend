@@ -7,8 +7,7 @@ const PaymentSchema = new mongoose.Schema(
             default: null,
         },
         order_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Order",
+            type: String,
             default: null,
         },
         razorpay_payment_id: {
@@ -25,24 +24,20 @@ const PaymentSchema = new mongoose.Schema(
         },
         status: {
             type: String,
+            default: "Paid",
+        },
+        user_email_id: {
+            type: String,
+            default: null,
+        },
+        user_number: {
+            type: String,
             default: null,
         },
         user_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             default: null,
-        },
-        user: {
-            type: Object,
-            required: true,
-        },
-        type: {
-            type: String,
-            required: true,
-        },
-        meta: {
-            type: Object,
-            required: true,
         },
     },
     {

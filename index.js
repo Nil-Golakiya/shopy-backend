@@ -13,17 +13,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const path = require("path");
 var bodyParser = require('body-parser')
-// const Razorpay = require("razorpay")
 
 dotenv.config();
 
-
-// const instance = new Razorpay({
-//   key_id: process.env.RAZORPAY_API_KEY,
-//   key_secret: process.env.RAZORPAY_APT_SECRET,
-// });
-
-// module.exports = { instance }
 
 const app = express();
 
