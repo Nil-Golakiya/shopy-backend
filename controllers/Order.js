@@ -44,7 +44,7 @@ const GetLimitedOrder = async (req, res,) => {
 
 const topsellingproduct = async (req, res, next) => {
     try {
-        const topselling = await OrderDetails.aggregate([
+        const condition = [
             { "$group": { _id: "$product_id", count: { $sum: 1 } } },
             { $sort: { count: -1 } },
             {
@@ -54,8 +54,31 @@ const topsellingproduct = async (req, res, next) => {
                     foreignField: "_id",
                     as: "product_details",
                 }
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "product_details.category_id",
+                    foreignField: "_id",
+                    as: "categories",
+                    pipeline: [{
+                        $project: { name: 1 }
+                    }],
+                },
+            },
+            {
+                $lookup: {
+                    from: "subcategories",
+                    localField: "product_details.subcategory_id",
+                    foreignField: "_id",
+                    as: "subcategories",
+                    pipeline: [{
+                        $project: { name: 1 }
+                    }],
+                },
             }
-        ])
+        ]
+        const topselling = await OrderDetails.aggregate(condition).limit(5)
         res.status(200).json(topselling)
     } catch (error) {
         console.log(error)

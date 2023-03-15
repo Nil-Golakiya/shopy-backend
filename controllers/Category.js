@@ -24,6 +24,7 @@ const GetAllCategory = async function (req, res) {
 }
 
 const UpdateCategory = async (req, res) => {
+  console.log("req---", req)
   try {
     if (req.body.img) {
       await fs.unlinkSync(req.body.img);

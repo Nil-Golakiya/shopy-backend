@@ -51,7 +51,7 @@ const paymentVerification = async (req, res) => {
             status: data.status,
             user_email_id: data.email,
             user_number: data.contact,
-            user_id:req.body.user_id
+            user_id: req.body.user_id
         });
         const savePayment = await newPayment.save();
         res.status(200).json(savePayment)
@@ -62,4 +62,30 @@ const paymentVerification = async (req, res) => {
     }
 }
 
-module.exports = { checkout, paymentVerification }
+const totalAmount = async (req, res) => {
+    const currentDate = new Date()
+    let lastYearDate = currentDate.setFullYear(currentDate.getFullYear() - 1)
+    lastYearDate = currentDate.setDate(1)
+    lastYearDate = currentDate.setMonth(currentDate.getMonth() + 1)
+    try {
+        const amountSum = await Payment.aggregate([{
+            $match: {
+                'createdAt': {
+                    "$gte": new Date(lastYearDate), "$lte": new Date()
+                }
+            }
+        },
+        {
+            $group: {
+                "_id": { "$month": "$createdAt" },
+                "amount": { "$sum": "$amount" },
+            }
+        }
+        ])
+        res.status(200).json(amountSum)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { checkout, paymentVerification, totalAmount }
