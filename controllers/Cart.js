@@ -1,6 +1,5 @@
 const Cart = require("../models/cart");
 const { sendError, sendSuccess } = require("../helpers/index")
-const fs = require("fs");
 
 const CreateCart = async (req, res,) => {
     try {
