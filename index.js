@@ -68,7 +68,7 @@ app.use("/carousel", CarouselRoute);
 //   });
 // });
 
-app.listen(8800, () => {
+app.listen(process.env.HOST || 8800, () => {
   connect();
   console.log("Connected To Backend");
 });
